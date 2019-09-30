@@ -1,0 +1,134 @@
+<head>
+  <title>Settings: General</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="/style.css">
+  <link rel="stylesheet" type="text/css" href="/css/settings.css">
+  <link rel="stylesheet" type="text/css" href="/css/menu.css">
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Change the settings of the bot">
+
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+
+
+
+</head>
+
+  <%- include("parts/menu") %>
+
+<body>
+
+<% if( updated == true){ %>
+  <div>
+    Settings updated!
+  </div>
+
+<% } %>
+
+<form class="settingsForm" method="post" action="/settings/general" >
+  <div class="settingCatagory" >Message of the Day</div>
+   <br />
+
+  <label class="settingLabel" for="motdEnabled">MOTD Enabled</label>
+  <% if (motdEnabled == true) {%>
+  <input checked="checked" name="motdEnabled" type="checkbox" />
+  <%}else { %>
+  <input name="motdEnabled" type="checkbox" />
+  <%} %>
+
+
+
+  <label class="settingLabel" for="motdID">Channel ID</label>
+  <input class="settingText" name="motdID" type="text" value="<%- motdID %>" />
+
+  <label class="settingLabel" for="motdDirectMessage">MOTD DM</label>
+  <% if (motdDirectMessage == true) {%>
+  <input checked="checked" name="motdDirectMessage" type="checkbox" />
+  <%}else { %>
+  <input name="motdDirectMessage" type="checkbox" />
+  <%} %>
+
+
+
+	<label class="settingLabel" for="motd">MOTD Message</label>
+	<textarea class="textArea" name="motd" cols="40" rows="5"><%- motd %></textarea>
+
+
+
+  <div class="settingCatagory" >Logging</div>
+  <br />
+
+  <label class="settingLabel" for="LogJoin">Log User Join/Leave</label>
+  <% if (LogJoin == true) {%>
+  <input checked="checked" name="LogJoin" type="checkbox" />
+  <%}else { %>
+  <input name="LogJoin" type="checkbox" />
+  <%} %>
+
+
+  <label class="settingLabel" for="joinID">Channel ID</label>
+	<input class="settingText"  name="joinID" type="text" value="<%- joinID %>" />
+
+  <label class="settingLabel" for="memberJoin">Join Message</label>
+	<textarea class="textArea" name="memberJoin" cols="40" rows="3"><%- memberJoin %></textarea>
+
+  <label class="settingLabel" for="memberLeave">Leave Message</label>
+	<textarea class="textArea" name="memberLeave" cols="40" rows="3"><%- memberLeave %></textarea>
+
+  <label class="settingLabel" for="memberBanned">Ban Message</label>
+	<textarea class="textArea" name="memberBanned" cols="40" rows="3"><%- memberBanned %></textarea>
+
+  <input type="submit" class="submit"/>
+</form>
+
+<script>
+//swipe code
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener('touchmove', handleTouchMove, false);
+
+var xDown = null;
+var yDown = null;
+
+function handleTouchStart(evt) {
+xDown = evt.touches[0].clientX;
+yDown = evt.touches[0].clientY;
+};
+
+function handleTouchMove(evt) {
+if ( ! xDown || ! yDown ) {
+    return;
+}
+
+var xUp = evt.touches[0].clientX;
+var yUp = evt.touches[0].clientY;
+
+var xDiff = xDown - xUp;
+var yDiff = yDown - yUp;
+
+if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
+    if ( xDiff > 0 ) {
+        /* left swipe */
+
+    } else {
+        /* right swipe */
+        window.location.href = '/permissions';
+    }
+} else {
+    if ( yDiff > 0 ) {
+        /* up swipe */
+    } else {
+        /* down swipe */
+    }
+}
+/* reset values */
+xDown = null;
+yDown = null;
+};
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<html>
+<head>
+  <title>Install: Welcome</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage Users">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img class="headerimg" src="/img/logo64.png">Donkord
+  </div>
+
+</header>
+<div class="container">
+
+  <h1> Almost done! </h1>
+
+
+  Lastly we just need to bots login token that you can get by going to <a href="https://discordapp.com/developers">Discords Developer Page</a>.
+  Once you are there create a new application, click client secret and copy it here.
+
+  <form class="settingsForm" method="post" action="/page6">
+
+    <label>Discord Bot Token</label>
+    <input name="token" class="textinput" type="text" placeholder="Token" value=""></input>
+
+
+
+    <input type="submit" class="nextButton" value="Next"/>
+
+  </form>
+
+
+  <% if(errors != null){ %>
+    <div class="errors">
+      <% errors.forEach( error =>{ %>
+          <div class="error"> <%- error.msg %></div>
+        <% }) %>
+    </div>
+  <%} %>
+
+
+
+
+
+
+
+</div>
+
+</body>
+
+
+
+</html>

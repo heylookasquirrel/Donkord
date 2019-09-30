@@ -1,0 +1,75 @@
+<head>
+  <title>Manage User: <%- user.username %></title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="/style.css">
+  <link rel="stylesheet" type="text/css" href="/css/settings.css">
+  <link rel="stylesheet" type="text/css" href="/css/menu.css">
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage user">
+
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+
+
+
+</head>
+
+  <%- include("parts/menu") %>
+
+<body>
+
+  <% if(errors){ %>
+    <div class="errors">Attention: </br> <% errors.forEach(i =>{ %>
+        <%= i.msg %></br>
+      <%   }) %></div>
+  <% } %>
+
+<form class="settingsForm" method="post" action="/settings/manage/user" >
+
+
+
+
+  <label class="settingLabel" for="username">Username</label>
+  <input class="settingText" name="username" type="text" value="<%- user.username %>" />
+
+  <label class="settingLabel" for="discordid">DiscordID</label>
+  <input class="settingText" name="discordid" type="text" value="<%- user.discordid %>" />
+
+  <label class="settingLabel" for="email">E-mail</label>
+  <input class="settingText" name="email" type="text" value="<%- user.email %>" />
+
+  <label class="settingLabel" for="permissions">Permission Level</label>
+  <select class="settingText" name="permissions">
+    <% if(user.permissions == 0){ %>
+      <option selected value="0">User</option>
+      <option value="1">Moderator</option>
+      <option value="2">Admin</option>
+    <% }else if(user.permissions == 1){ %>
+      <option value="0">User</option>
+      <option selected value="1">Moderator</option>
+      <option value="2">Admin</option>
+    <% }else if(user.permissions == 2){ %>
+      <option value="0">User</option>
+      <option value="1">Moderator</option>
+      <option selected value="2">Admin</option>
+    <% } %>
+  </select>
+
+  <label class="settingLabel" for="password">Change Password</label>
+  <input class="settingText" name="password" type="password" />
+
+  <label class="settingLabel" for="password"></label>
+  <input class="settingText" name="password2" type="password" />
+
+  <input type="hidden" name="id" value="<%- user.id %>"/>
+
+  <input type="submit" class="submit"/>
+</form>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+h1 {
+  text-align: center;
+}
+
+.container {
+  margin:20% auto ;
+  width: 320px;
+  padding: 10px;
+  background-color:#2c2f33;
+  border-radius:4px;
+}
+
+.lostPwd{
+  text-align:right;
+  font-size:12px;
+  margin:auto;
+  margin-bottom:5px;
+  width:100%;
+  color:#ff6060;
+  text-shadow: 1px 1px #262222;
+}
+
+.loginContainer{
+  margin: auto;
+  width: 80%;
+  padding: 10px;
+}
+
+.loginField {
+  width: 100%;
+  border-radius:4px;
+  padding:5px;
+  margin-bottom:10px;
+  color:black;
+}
+
+.submit {
+  float:left;
+  padding:8px 5px;
+  border-top: 1px solid #9baff7;
+  border-bottom: 1px solid #162044;
+  color:white;
+  background: #7289da;
+  border-radius:4px 0px 0px 4px;
+  margin:auto;
+  width:50%;
+  text-align:center
+}
+.register {
+  display:inline;
+  clear:none;
+  padding:8px 5px;
+  border-top: 1px solid #7f97ef;
+  border-bottom: 1px solid #162044;
+  color:white;
+  background: #5b74cc;
+  border-radius:0px 4px 4px 0px;
+  margin:auto;
+  width:50%;
+  text-align:center
+}
+
+.newUser {
+  padding:8px 5px;
+  border-top: 1px solid #9baff7;
+  border-bottom: 1px solid #162044;
+  color:white;
+  background: #7289da;
+  border-radius:4px;
+  margin:auto;
+  width:100%;
+  text-align:center
+}
+
+.errors{
+  color:#ff6060;
+  text-shadow: 1px 1px #262222;
+  padding:5px;
+  margin-left:5px
+
+}
+
+.roleButton{
+  margin:10px auto;
+  width:50%;
+  color:white;
+  text-align:center;
+  padding:5px;
+  border-radius: 5px;
+  background:#5b74cc;
+
+}

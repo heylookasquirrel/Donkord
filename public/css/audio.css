@@ -1,0 +1,228 @@
+.setlistObject {
+  padding:15px;
+}
+
+.setlistObject:nth-child(odd) {
+  color:#f2f2f2;
+  background:#343838;
+}
+
+.setlistObject:nth-child(even) {
+  color:#f2f2f2;
+  background:#494c4c
+}
+
+.setlistButtons {
+  float:right;
+  clear:none;
+  position:relative;
+  top:-30px;
+  color:black;
+}
+
+.artist{
+  font-size:12px
+}
+
+.header {
+  display:grid;
+  text-align:center;
+  grid-template-columns: auto auto auto;
+  color:#f2f2f2;
+
+  font-size: 30px;
+  letter-spacing:-1px
+}
+
+.headerItem:active{
+  background-color:#282b30
+}
+
+.headerItem {
+  display:block;
+  padding:10px;
+}
+
+/* All buttons */
+
+button {
+  border-top: 1px solid #9baff7;
+  border-bottom: 1px solid #162044;
+  color:white;
+  background: #7289da;
+  border-radius:4px;
+  margin:auto;
+
+  text-align:center
+}
+
+button:hover {
+  background:#6279ca;
+  border-top: 1px solid #a5b7f7;
+  border-bottom: 1px solid #2f3e72;
+}
+
+/* Search Youtube */
+
+.youtubeSection {
+  margin: 10px;
+  display:grid;
+  grid-template-columns: auto 100px
+}
+
+#search {
+  border-radius:8px;
+  padding:4px;
+  color:black;
+}
+
+#youtubeButton {
+  padding:4px;
+  margin:3px;
+  color:white;
+}
+
+
+
+.youtubeResults{
+  display:grid;
+  width:100%;
+  overflow:scroll;
+  grid-template-columns: repeat( auto-fit, minmax(250px, 1fr) );
+  height:60%;
+
+}
+
+.youtubeResults::-webkit-scrollbar {
+ display: none;
+}
+
+
+.youtubeItem{
+  text-align: center;
+  margin:10px;
+  height:150px;
+}
+
+
+
+.youtubeImg {
+  display:block;
+  margin:auto;
+  width:180px;
+  height:100px;
+}
+
+.youtubeTitle {
+  color: #f2f2f2;
+  font-size:14px;
+}
+
+.youtubePlay {
+  clear:both;
+  position:relative;
+  top:-30px;
+  left:2px;
+  height:40px;
+  width:80px;
+  opacity: 0.3;
+  margin:-20px 0;
+}
+
+.youtubePlaylist {
+  position:relative;
+  top:-30px;
+  left:0px;
+  height:40px;
+  width:80px;
+  opacity: 0.3;
+  margin:-20px 0;
+}
+
+.youtubePlay:hover {
+  opacity: 1;
+}
+
+.youtubePlaylist:hover {
+  opacity: 1;
+}
+/* nowPlaying css */
+
+
+.nowPlaying {
+  float:right;
+  position:absolute;
+  bottom:42px;
+  width:100%;
+  display:grid;
+  padding:10px 0;
+  grid-template-columns: 40px 80px auto;
+  font-size: 14px;
+  color: #f2f2f2;
+  background-color: 	#282b30
+}
+
+.nowPlayingTitle {
+  color: #f2f2f2;
+}
+
+#nowPlayingStatus {
+  position:relative;
+  top:10px;
+  left:10px;
+}
+
+
+.nowPlayingArtist {
+
+}
+
+/* player css */
+
+.player {
+  background-color:	#1e2124;
+  position:absolute;
+  bottom:0px;
+  padding:5px 0;
+  width:100%;
+  display: grid;
+  grid-column-gap: 5px;
+  grid-template-columns: auto 50px 50px 50px 120px 80px auto
+}
+
+#play {
+  padding:8px;
+}
+#pause {
+  padding:8px;
+}
+#stop {
+  padding:8px;
+}
+#reset {
+  padding:8px;
+  color:#EEEEEE;
+  font-size:16px;
+  letter-spacing: 3px;
+  font-weight:bold;
+}
+
+#loading {
+  width:100%;
+  height:100%;
+  position:relative;
+  top:0px;
+  left:0px;
+  background:black;
+  opacity:.4;
+}
+
+#loading img{
+  display:block;
+  position:relative;
+  top:30%;
+  margin:auto;
+
+
+
+}

@@ -1,0 +1,49 @@
+<html>
+<head>
+  <title>Install Finished</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage Users">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img class="headerimg" src="/img/logo64.png">Donkord
+  </div>
+
+</header>
+<div class="container">
+
+  <h1> Finished! </h1>
+
+
+  We genuinely hope things are all set, just restart the server and things should be good to go. If you have any issues please contact me via squirrel@squirrelnet.org
+
+
+
+
+  <% if(errors != null){ %>
+    <div class="errors">
+      <% errors.forEach( error =>{ %>
+          <div class="error"> <%- error.msg %></div>
+        <% }) %>
+    </div>
+  <%} %>
+
+
+
+
+
+
+
+</div>
+
+</body>
+
+
+
+</html>

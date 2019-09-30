@@ -1,0 +1,52 @@
+<html>
+<head>
+  <title>Register</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="css/login.css">
+  <link rel="stylesheet" type="text/css" href="css/menu.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Register an account">
+
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+
+
+
+      <!--[if lte IE 8]>
+          <link rel="stylesheet" href="css/layouts/side-menu-old-ie.css">
+      <![endif]-->
+      <!--[if gt IE 8]><!-->
+          <link rel="stylesheet" href="css/layouts/side-menu.css">
+      <!--<![endif]-->
+</head>
+
+  <%- include("parts/menu") %>
+
+<div class="container">
+  <div class="logo"> Register</div>
+  <form class="loginContainer" method="post" action="/register">
+
+    <input class="loginField" name="username" type="text" value="" placeholder="Username"/>
+    </br>
+    <input class="loginField" name="password" type="password" value="" placeholder="Password"/>
+    </br>
+    <input class="loginField" name="password2" type="password" value="" placeholder="Confirm Password"/>
+    </br>
+    <input class="loginField" name="email" type="text" value="" placeholder="Email"/>
+    </br>
+    <input type="submit" class="newUser"/>
+
+  </form>
+
+  <% if(errors){ %>
+    <div class="errors">Attention: </br> <% errors.forEach(i =>{ %>
+        <%= i.msg %></br>
+      <%   }) %></div>
+  <% } %>
+</div>
+
+
+
+</html>

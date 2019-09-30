@@ -1,0 +1,74 @@
+<html>
+<head>
+  <title>Role Assign</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="css/login.css">
+  <link rel="stylesheet" type="text/css" href="css/menu.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Assign your roles">
+
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+
+
+
+      <!--[if lte IE 8]>
+          <link rel="stylesheet" href="css/layouts/side-menu-old-ie.css">
+      <![endif]-->
+      <!--[if gt IE 8]><!-->
+          <link rel="stylesheet" href="css/layouts/side-menu.css">
+      <!--<![endif]-->
+</head>
+
+  <%- include("parts/menu") %>
+
+<div class="container">
+
+  <h1>Assign your roles</h1>
+
+  <% session.guild.roles.forEach( role => { %>
+     <div class="roleButton" value="<%- role.id %>" > <%- role.name %> </div>
+  <% }) %>
+
+  <% if(errors){ %>
+    <div class="errors">Attention: </br> <% errors.forEach(i =>{ %>
+        <%= i.msg %></br>
+      <%   }) %></div>
+  <% } %>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+
+  let sessionid = window.location.search.slice(13)
+
+
+  let hostname = window.location.hostname
+
+  var socket = io('http://' + hostname + ':3001');
+
+
+  Array.from(document.getElementsByClassName("roleButton")).forEach( (button, index)=>{
+
+      button.onclick = function(e){
+
+        document.getElementsByClassName("roleButton")[index].setAttribute("style","display:none;")
+        let value = document.getElementsByClassName("roleButton")[index].getAttribute("value");
+        socket.emit("select",{
+
+          role:value,
+          sessionid:sessionid
+
+        })
+
+
+    }
+  })
+
+
+</script>
+
+</html>

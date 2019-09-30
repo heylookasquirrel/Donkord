@@ -1,0 +1,63 @@
+.usersTable {
+  display:grid;
+  grid-template-columns: minmax(1fr, 800px)
+
+}
+
+.usersHeader {
+  display:grid;
+  grid-template-columns: 20px minmax(25%, 300px) minmax(25%, 300px) minmax(25%, 300px) 75px;
+  padding:10px;
+  font-weight:bold;
+
+}
+
+.usersContainer {
+  display:grid;
+  padding: 0 10px;
+  grid-template-columns: 20px minmax(25%, 300px) minmax(25%, 300px) minmax(25%, 300px) 75px;
+  text-align: center
+}
+
+
+.usersId {
+  border: solid #99aab5 2px;
+  padding:10px 0px;
+}
+
+.usersUsername {
+  border: solid #99aab5 2px;
+  border-left: 0px;
+  padding:10px;
+}
+.usersDiscordId {
+  border: solid #99aab5 2px ;
+  border-left: 0px;
+  padding:10px;
+}
+
+.usersManage {
+  border: solid #99aab5 2px ;
+  border-left: 0px;
+  padding:10px;
+}
+
+.moderator {
+  color:green
+  border: solid #99aab5 2px;
+  border-left: 0px;
+  padding:10px;
+}
+
+.user {
+  border: solid #99aab5 2px;
+  border-left: 0px;
+  padding:10px;
+}
+
+.admin {
+  color:red;
+  border: solid #99aab5 2px;
+  border-left: 0px;
+  padding:10px;
+}

@@ -1,0 +1,492 @@
+<html>
+<head>
+  <title>Music Player</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="css/audio.css">
+  <link rel="stylesheet" type="text/css" href="css/menu.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Work in progress audio player">
+
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+
+
+
+      <!--[if lte IE 8]>
+          <link rel="stylesheet" href="css/layouts/side-menu-old-ie.css">
+      <![endif]-->
+      <!--[if gt IE 8]><!-->
+          <link rel="stylesheet" href="css/layouts/side-menu.css">
+      <!--<![endif]-->
+</head>
+
+  <%- include("parts/menu") %>
+
+<body>
+  <div id="loading">
+    <img src="img/loading.gif"/>
+  </div>
+  <div class="header">
+    <div class="headerItem">
+      <i class="fab fa-youtube"style="color:#ff0000"></i> Youtube
+    </div>
+    <div class="headerItem">
+      Local
+    </div>
+    <div class="headerItem">
+      Playlist
+    </div>
+   </div>
+
+  <div id="youtube">
+
+    <div class="youtubeSection">
+      <input id="search" placeholder="Youtube Search.."> <button id="youtubeButton">Search</button></input>
+    </div>
+
+    <div class="youtubeResults" id="youtubeResults">
+
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <div id="setlist"></div>
+  <div id="playlist">
+    Placeholder
+  </div>
+
+  <div class="nowPlaying">
+    <div id="nowPlayingStatus"><i class="fas fa-play"></i></div>
+    <div>Title:</div>
+    <div class="nowPlayingTitle" id="nowPlayingTitle"> Nothing Loaded </div>
+    <div></div>
+    <div>Artist:</div>
+    <div class="nowPlayingArtist" id="nowPlayingArtist">  </div>
+  </div>
+  <div class="player">
+    <div></div>
+    <button id="play"><i class="fas fa-play"></i></button>
+    <button id="pause"><i class="fas fa-pause"></i></button>
+    <button id="stop"><i class="fas fa-stop"></i></button>
+    <input type="range" min="1" max="100" value="100" class="range" id="volume">
+    <button id="reset">reset</button>
+    <div></div>
+  </div>
+
+
+
+</body>
+<script src="https://apis.google.com/js/client.js?onload=onClientLoad" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+
+  let socket = io();
+  let setlist = document.getElementById("setlist")
+  let songs = [<% songs.forEach( i => { %>{
+    title: "<%- i.title %>",
+    artist: "<%- i.artist %>",
+    path: "<%- i.path %>",
+    type: "<%- i.type %>"
+  },<% }) %>
+  ]
+
+  let playlistData = [];
+  let play = document.getElementById("play");
+  play.onclick = function(e){
+    socket.emit("play", {
+      path: song.path
+    })
+  }
+
+  let pause = document.getElementById("pause");
+  pause.onclick = function(e){
+    socket.emit("pause")
+  }
+
+  let stop = document.getElementById("stop");
+  stop.onclick = function(e){
+    socket.emit("stop")
+  }
+
+  function updateSetlist(){
+
+    songs.forEach( (song, index) =>{
+
+        let setlistObject = document.createElement("div");
+        setlistObject.setAttribute("class","setlistObject");
+
+        let setlistButtons = document.createElement("div");
+        setlistButtons.setAttribute("class","setlistButtons");
+
+        let playButton = document.createElement("button");
+        playButton.setAttribute("class","setlist-play")
+
+        let playIcon = document.createElement("i");
+        playIcon.setAttribute("class","fas fa-play");
+        playButton.appendChild(playIcon);
+
+        let listButton = document.createElement("button");
+        listButton.setAttribute("class","listButton")
+
+        let listIcon = document.createElement("i");
+        listIcon.setAttribute("class","fas fa-list-ul");
+        listButton.appendChild(listIcon);
+
+        setlistButtons.appendChild(playButton)
+        setlistButtons.appendChild(listButton)
+
+        let title = document.createElement("div");
+        title.innerHTML = song.title;
+
+        let artist = document.createElement("div");
+        artist.innerHTML = song.artist;
+        artist.setAttribute("class","artist")
+
+        setlistObject.appendChild(title)
+        setlistObject.appendChild(artist)
+        setlistObject.appendChild(setlistButtons)
+
+        setlist.appendChild(setlistObject)
+    })
+
+    Array.from(document.getElementsByClassName("setlist-play")).forEach( (button, index)=>{
+        button.onclick = function(e){
+          socket.emit("play",songs[index])
+          //change volume on start
+          socket.emit("volume",volume.value/100)
+        }
+    })
+
+    Array.from(document.getElementsByClassName("listButton")).forEach( (button, index)=>{
+        button.onclick = function(e){
+          socket.emit("playlistAdd",songs[index])
+
+        }
+    })
+
+
+  }
+
+  //youtube search functions
+  let Search = document.getElementById("search")
+  let youtube = document.getElementById("youtube")
+  let youtubeButton = document.getElementById("youtubeButton")
+  let youtubeDisplay = document.getElementById("youtubeResults")
+  let youtubeResults = {};
+  youtubeButton.onclick = function(e){
+
+    var query = Search.value;
+
+    var request = gapi.client.youtube.search.list({
+        part: 'snippet',
+        q:query,
+        type: "video",
+        maxResults: 50
+    });
+    request.execute(onSearchResponse);
+
+  }
+
+  function onSearchResponse(response) {
+    var responseString = JSON.stringify(response, '', 2);
+
+    youtubeResults = JSON.parse(responseString);
+
+    updateYoutube()
+  }
+
+  Search.addEventListener("keyup", function(event) {
+      if (event.key === "Enter") {
+        var query = Search.value;
+
+        var request = gapi.client.youtube.search.list({
+            part: 'snippet',
+            q:query,
+            type: "video",
+            maxResults: 50
+        });
+        request.execute(onSearchResponse);
+      }
+  });
+
+  function updateYoutube(){
+
+    youtubeDisplay.innerHTML = "";
+
+    youtubeResults.items.forEach( (item, index) =>{
+
+      let youtubeItem = document.createElement("div");
+      youtubeItem.setAttribute("class","youtubeItem");
+
+      let youtubeImg = document.createElement("img")
+      youtubeImg.setAttribute("class","youtubeImg");
+      youtubeImg.src = item.snippet.thumbnails.medium.url;
+      youtubeImg.setAttribute("value",index);
+
+      let youtubePlay = document.createElement("button");
+      youtubePlay.setAttribute("class"," youtubePlay")
+      let playIcon = document.createElement("i")
+      playIcon.setAttribute("class","fas fa-play")
+      youtubePlay.appendChild(playIcon)
+
+      let youtubePlaylist = document.createElement("button");
+      youtubePlaylist.setAttribute("class"," youtubePlaylist")
+      let playlistIcon = document.createElement("i")
+      playlistIcon.setAttribute("class","fas fa-list-ul")
+      youtubePlaylist.appendChild(playlistIcon)
+
+      let youtubeTitle = document.createElement("div");
+      youtubeTitle.setAttribute("class","youtubeTitle");
+      youtubeTitle.innerHTML = item.snippet.title;
+
+      youtubeItem.appendChild(youtubeImg)
+      youtubeItem.appendChild(youtubePlay)
+      youtubeItem.appendChild(youtubePlaylist)
+      youtubeItem.appendChild(youtubeTitle)
+
+      youtubeDisplay.appendChild(youtubeItem);
+
+    })
+
+    Array.from(document.getElementsByClassName("youtubePlay")).forEach( (button, index)=>{
+        button.onclick = function(e){
+
+
+          let youtubeURL = "http://youtube.com/" + youtubeResults.items[index].id.videoId
+          socket.emit("play",{
+
+                title: youtubeResults.items[index].snippet.title,
+                artist:  youtubeResults.items[index].snippet.channelTitle,
+                path:  youtubeURL,
+                type: "youtube"
+
+          })
+          //change volume on start
+          socket.emit("volume",volume.value/100)
+
+        }
+    })
+
+    Array.from(document.getElementsByClassName("youtubePlaylist")).forEach( (button, index)=>{
+        button.onclick = function(e){
+
+
+          let youtubeURL = "http://youtube.com/" + youtubeResults.items[index].id.videoId
+          socket.emit("playlistAdd",{
+
+                title: youtubeResults.items[index].snippet.title,
+                artist:  youtubeResults.items[index].snippet.channelTitle,
+                path:  youtubeURL,
+                type: "youtube"
+
+          })
+
+        }
+    })
+
+  }
+
+  let volume = document.getElementById("volume")
+  volume.onchange = function(e){
+    socket.emit("volume",volume.value/100)
+  }
+
+  let reset = document.getElementById("reset")
+  reset.onclick = function(e){
+    socket.emit("reset")
+  }
+
+  updateSetlist()
+
+
+  window.addEventListener('load', function(){
+    gapi.client.load('youtube', 'v3', onYouTubeApiLoad);
+  }, false )
+
+  function onYouTubeApiLoad() {
+    gapi.client.setApiKey('AIzaSyCNgRWO7eWaBDYpPJh9DvTwvnf-E6er4Sc');
+  }
+
+  function updateMode(mode){
+
+    if(mode == 0){
+      setlist.style.display = "none"
+      playlist.style.display = "none"
+      youtube.style.display = "block"
+    }
+    else if(mode == 1){
+      setlist.style.display = "block"
+      playlist.style.display = "none"
+      youtube.style.display = "none"
+    }
+    else if(mode == 2){
+      setlist.style.display = "none"
+      playlist.style.display = "block"
+      youtube.style.display = "none"
+    }
+
+  }
+
+  //Mode Switcher
+  Array.from(document.getElementsByClassName("headerItem")).forEach( (button, index)=>{
+      button.onclick = function(e){
+        updateMode(index)
+        if(index == 2){
+          updatePlaylist()
+        }
+      }
+  })
+
+  function updatePlaylist(){
+
+    socket.emit("playlistQuery")
+
+  }
+
+  socket.on("playlistData", data =>{
+    console.log(data)
+    playlistData = data;
+
+    playlist.innerHTML = ""
+
+    playlistData.forEach( (song, index) =>{
+
+        let setlistObject = document.createElement("div");
+        setlistObject.setAttribute("class","setlistObject");
+
+        let setlistButtons = document.createElement("div");
+        setlistButtons.setAttribute("class","setlistButtons");
+
+        let playButton = document.createElement("button");
+        playButton.setAttribute("class","playlist-play")
+
+        let playIcon = document.createElement("i");
+        playIcon.setAttribute("class","fas fa-play");
+        playButton.appendChild(playIcon);
+
+        setlistButtons.appendChild(playButton)
+
+        let title = document.createElement("div");
+        title.innerHTML = song.title;
+
+        let artist = document.createElement("div");
+        artist.innerHTML = song.artist;
+        artist.setAttribute("class","artist")
+
+        setlistObject.appendChild(title)
+        setlistObject.appendChild(artist)
+        setlistObject.appendChild(setlistButtons)
+
+        playlist.appendChild(setlistObject)
+    })
+
+    Array.from(document.getElementsByClassName("playlist-play")).forEach( (button, index)=>{
+        button.onclick = function(e){
+
+          socket.emit("playlistPlay", index)
+          console.log(index)
+          //change volume on start
+          socket.emit("volume",volume.value/100)
+
+        }
+    })
+
+  })
+
+  let nowPlayingTitle = document.getElementById("nowPlayingTitle")
+  let nowPlayingArtist = document.getElementById("nowPlayingArtist")
+  let nowPlayingStatus = document.getElementById("nowPlayingStatus")
+  socket.on("nowPlayingData", data =>{
+    document.getElementById("loading").setAttribute("style","display:none;")
+    console.log(data)
+    if(data.title == undefined){
+      nowPlayingTitle.innerHTML = "Nothing Loaded"
+      nowPlayingArtist.innerHTML = ""
+    }
+    nowPlayingTitle.innerHTML = data.title
+    nowPlayingArtist.innerHTML = data.artist
+    nowPlayingStatus.innerHTML = ""
+    if(data.status == 0){
+      let status = document.createElement("i");
+      status.setAttribute("class","fas fa-stop")
+      nowPlayingStatus.appendChild(status);
+    }else if(data.status == 1){
+      let status = document.createElement("i");
+      status.setAttribute("class","fas fa-play")
+      nowPlayingStatus.appendChild(status);
+    }else if(data.status == 2){
+      let status = document.createElement("i");
+      status.setAttribute("class","fas fa-pause")
+      nowPlayingStatus.appendChild(status);
+    }
+
+  })
+
+  function nowPlaying(){
+
+    socket.emit("nowPlaying")
+
+  }
+
+
+  updateMode(0)
+  nowPlaying()
+
+  //swipe code
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener('touchmove', handleTouchMove, false);
+
+var xDown = null;
+var yDown = null;
+
+function handleTouchStart(evt) {
+  xDown = evt.touches[0].clientX;
+  yDown = evt.touches[0].clientY;
+};
+
+function handleTouchMove(evt) {
+  if ( ! xDown || ! yDown ) {
+      return;
+  }
+
+  var xUp = evt.touches[0].clientX;
+  var yUp = evt.touches[0].clientY;
+
+  var xDiff = xDown - xUp;
+  var yDiff = yDown - yUp;
+
+  if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
+      if ( xDiff > 0 ) {
+          /* left swipe */
+          window.location.href = '/permissions';
+      } else {
+          /* right swipe */
+
+      }
+  } else {
+      if ( yDiff > 0 ) {
+          /* up swipe */
+      } else {
+          /* down swipe */
+      }
+  }
+  /* reset values */
+  xDown = null;
+  yDown = null;
+};
+
+//range slider
+
+
+
+
+</script>
+</html>

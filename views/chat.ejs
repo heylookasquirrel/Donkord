@@ -1,0 +1,125 @@
+<html>
+<head>
+  <title>Chat view</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+  <body>
+
+      <h3>Chat view</h3>
+
+      <div id="channels">
+
+      </div>
+      <div id="chatbox">
+
+        Loading...
+
+
+      </div>
+
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+
+
+    var socket = io();
+    let chatbox = document.getElementById("chatbox")
+    let channelslist = document.getElementById("channels")
+    let channels = []
+
+    function updateChannelList(){
+      channelslist.innerHTML = "";
+      channels.forEach(
+      (channel, index) =>{
+
+        let channelButton = document.createElement("button");
+        channelButton.setAttribute("class","channelButton");
+        channelButton.setAttribute("value",index);
+        channelButton.innerHTML = channel.channelName;
+
+        channelslist.appendChild(channelButton)
+      })
+
+      let channelclick = document.getElementsByClassName("channelButton")
+
+      for(let i = 0; i < channelclick.length;i++){
+        channelclick[i].onclick = function(e){
+          loadMessages(this.value)
+        }
+      }
+
+    }
+
+    function loadMessages(channel){
+
+      chatbox.innerHTML = "";
+      channels[channel].messages.forEach(
+        (msg,index) =>{
+          chatbox.appendChild(msg);
+        }
+      )
+    }
+
+    socket.on("connect", function(){
+      document.getElementById("chatbox").innerHTML = " ";
+    });
+
+    socket.on("chat",function(data){
+
+
+      let messageContainer = document.createElement("div");
+      messageContainer.setAttribute("class","messageContainer")
+      let img = document.createElement("img");
+      img.setAttribute("class","useravatar")
+      img.src = data.avatar;
+
+      let textContainer = document.createElement("div")
+      textContainer.setAttribute("class","textContainer")
+
+      let username = document.createElement("div")
+      username.setAttribute("class","username")
+      username.setAttribute("style",`color:#${data.memberColor.toString(16)}`)
+      username.innerHTML = data.author;
+
+      let content = document.createElement("div")
+      content.setAttribute("class","content")
+      content.innerHTML = data.content;
+
+      let timestamp = document.createElement("div")
+      timestamp.setAttribute("class","timestamp")
+      timestamp.innerHTML = data.timestamp
+
+      textContainer.appendChild(username);
+      textContainer.appendChild(content);
+      textContainer.appendChild(timestamp);
+
+      messageContainer.appendChild(img);
+      messageContainer.appendChild(textContainer)
+
+
+      let matched = false;
+      channels.forEach( (channel, index) => {
+        if(data.channelId == channel.channelId){
+          matched = true;
+          channel.messages.push(messageContainer)
+          return
+        }
+      })
+
+      if(!matched){
+        channels.push({
+          channelId: data.channelId,
+          channelName: data.channelName,
+          messages: [messageContainer]
+        })
+
+      }
+
+      updateChannelList()
+    })
+
+
+
+  </script>
+
+</html>

@@ -1,0 +1,100 @@
+<div class="logo">
+  <img class="headerimg" src="/img/logo64.png">Donkord
+</div>
+
+<nav>
+        <ul>
+          <% if(permissions >= 0){%>
+            <li><a href="#"> <i class="fas fa-bars"></i>  General</a>
+            <!-- First Tier Drop Down -->
+            <ul>
+                <li><a href="/music">Music</a></li>
+            </ul>
+            </li>
+            <li><a href="#"><i class="fas fa-wrench"></i>  Settings</a>
+            <!-- First Tier Drop Down -->
+            <ul>
+
+
+                <% if(permissions == 2){ %>
+                  <li><a href="/settings/general">General</a></li>
+                  <li><a href="/settings/users">Manage Users</a></li>
+                  <li><a href="/settings/permissions">Permissions</a></li>
+                <% } %>
+
+              </ul>
+            <li><a href="/logout"> <i class="fas fa-sign-out-alt"></i>  Logout</a>
+          <%} %>
+        </ul>
+    </nav>
+
+
+<style>
+nav {
+
+	margin: 0px 0;
+	background-color: #23272a;
+  display:grid;
+
+}
+nav ul {
+	padding: 0;
+  margin: 0;
+	list-style: none;
+	position: relative;
+  z-index: 100;
+	}
+
+nav ul li {
+	display:inline-block;
+	background-color: #23272a;
+	}
+
+nav a {
+	display:block;
+	padding:0 10px;
+	color:#FFF;
+	font-size:20px;
+	line-height: 60px;
+	text-decoration:none;
+}
+
+nav a:hover {
+	background-color: #000000;
+}
+
+/* Hide Dropdowns by Default */
+nav ul ul {
+	display: none;
+	position: absolute;
+  z-index: 100;
+	top: 60px; /* the height of the main nav */
+}
+
+/* Display Dropdowns on Hover */
+nav ul li:hover > ul {
+	display:inherit;
+}
+
+/* Fisrt Tier Dropdown */
+nav ul ul li {
+	width:170px;
+	float:none;
+	display:list-item;
+	position: relative;
+  z-index: 100;
+}
+
+/* Second, Third and more Tiers	*/
+nav ul ul ul li {
+	position: relative;
+  z-index: 100;
+	top:-60px;
+	left:170px;
+}
+
+
+/* Change this in order to change the Dropdown symbol */
+li > a:after { content:  ''; }
+li > a:only-child:after { content: ''; }
+</style>

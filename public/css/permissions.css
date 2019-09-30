@@ -1,0 +1,186 @@
+.commandcontainer {
+  padding:5px;
+  display:grid;
+  grid-template-columns: 100px auto 100px 50px;
+  grid-column-gap: 15px;
+}
+
+.commandcontainerrole {
+  padding:5px;
+  display:grid;
+  grid-template-columns: 100px 50px;
+  grid-column-gap: 15px;
+}
+
+.commandTable {
+
+  padding:5px;
+  display:grid;
+  grid-template-columns: 100px auto 100px 50px;
+  grid-column-gap: 15px;
+}
+
+#chatbox {
+  width:100%;
+  height:60%;
+  overflow-y:scroll;
+  overflow-x:auto;
+  background:#2C2F33;
+}
+
+.messageContainer{
+  display:grid;
+  grid-row-gap:10px;
+  grid-template-columns: 50px auto;
+  padding:5px;
+}
+
+.messageContainer:active {
+  background: #7289DA;
+}
+
+.textContainer{
+  margin-left:10px;
+}
+
+.username{
+  font-weight: bold;
+}
+
+.timestamp{
+  color:#99AAB5;
+  font-size:9px;
+  float:right;
+}
+
+
+.useravatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  border: solid black 2px;
+}
+
+.serverList {
+  padding:5px;
+  background:#2C2F33;
+
+  border-right: solid grey 2px
+}
+
+.serverIcon {
+  width:50px;
+  height:50px;
+  border-radius:25px;
+}
+
+.ServerContainer {
+    position: relative;
+    display: inline-block;
+    margin: 2.5px 0px;
+}
+
+.ServerContainer .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    top:12px;
+    left:52px;
+    z-index: 1;
+}
+
+.ServerContainer:hover .tooltiptext {
+    visibility: visible;
+}
+
+.ServerContainer:active .serverIcon{
+  border-radius:15px;
+}
+
+.submit  {
+  position:fixed;
+  bottom:30px;
+  color:black;
+  z-index:20;
+  left:45%;
+  padding:10px;
+  -webkit-box-shadow: 4px 6px 29px -5px rgba(0,0,0,0.75);
+  -moz-box-shadow: 4px 6px 29px -5px rgba(0,0,0,0.75);
+  box-shadow: 4px 6px 29px -5px rgba(0,0,0,0.75);
+}
+
+.container {
+  display:grid;
+  grid-gap: ;
+  grid-template-columns: 62px auto;
+  height:100%;
+
+}
+
+
+.roleContainer {
+  padding-bottom:70px;
+  overflow-y:scroll;
+  height:100%;
+}
+
+.roleName {
+  text-align:left;
+  clear:none;
+  width:100%;
+  font-size:20px;
+  font-weight:bold;
+  box-sizing: border-box;
+  overflow:hidden;
+  padding:10px 18px;
+  border-top: 2px solid #23272a;
+  border-bottom: 2px solid #23272a;
+  background:#2c2f33;
+
+}
+
+.roleId {
+  text-align:right;
+  float:right;
+  clear:none;
+  color:#36393e;
+  display:none
+}
+
+.roleId:hover {
+  display:block;
+  color:white;
+  background:black;
+}
+
+.commandContainer{
+  clear:both;
+  display:grid;
+  padding:20px 0 20px 0;
+
+  grid-row-gap: 5px;
+  grid-template-columns: repeat( auto-fit, minmax(160px, 1fr) 60px ) ;
+}
+
+
+
+.commandcontainerrole {
+  margin:5px;
+}
+
+.commandName {
+  padding:6px;
+  padding-left:15px;
+  font-size:18px;
+}
+
+.commandSelect {
+
+}

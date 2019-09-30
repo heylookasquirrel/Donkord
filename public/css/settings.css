@@ -1,0 +1,38 @@
+
+.settingsForm{
+  margin:auto;
+  width:100%;
+  display:grid;
+  grid-template-columns: repeat( 2, minmax(150px, 1fr) );
+}
+
+.settingText {
+    margin:5px 10px 10px 10px;
+    padding:6px;
+    color:black;
+}
+
+.settingCatagory{
+  font-size:20px;
+  margin:10px;
+}
+
+.settingLabel{
+  margin:5px 10px 10px 10px;
+}
+
+.textArea {
+  margin:5px 10px 10px 10px;
+}
+
+.submit  {
+  position:fixed;
+  bottom:30px;
+  color:black;
+  z-index:20;
+  left:45%;
+  padding:10px;
+  -webkit-box-shadow: 4px 6px 29px -5px rgba(0,0,0,0.75);
+  -moz-box-shadow: 4px 6px 29px -5px rgba(0,0,0,0.75);
+  box-shadow: 4px 6px 29px -5px rgba(0,0,0,0.75);
+}
