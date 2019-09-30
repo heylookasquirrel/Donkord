@@ -1,66 +1,56 @@
-let canvaslib = require("canvas-prebuilt");
-let fs = require("fs")
+const { createCanvas, loadImage } = require('canvas')
+const canvas = createCanvas(356, 380)
+const ctx = canvas.getContext('2d')
 
 module.exports.run = async (bot, message, args, string) =>{
 
+
   message.delete(1);
-  Image = canvaslib.Image;
-  canvas = new canvaslib(356, 380);
-  ctx = canvas.getContext('2d');
-  var img = new canvaslib.Image;
 
-  var out = fs.createWriteStream('out.png');
+  loadImage('resources/img/nootsad.png').then((image) => {
+    ctx.drawImage(image, 0, 0, image.width, image.height);
 
-  fs.readFile('resources/img/nootsad.png', function(err, image){
-  if (err) throw err;
-  img.src = image;
-  });
+    let xSize = 180;
+    let ySize = 140;
+    let font = 40;
+    ctx.font=`${font}px Arial`;
+    let lines = ['']
+    let stringBuffer = "";
+    args.forEach( item => {
 
-  img.onload = async function(){
-      ctx.drawImage(img, 0, 0, img.width, img.height);
-
-      let xSize = 180;
-      let ySize = 140;
-      let font = 40;
       ctx.font=`${font}px Arial`;
-      let lines = ['']
-      let stringBuffer = "";
-      args.forEach( item => {
+      let testText = stringBuffer + item
+      if(ctx.measureText(testText).width > xSize){
+        stringBuffer = "";
+        lines.push("")
+        font = font - 2
+      }
 
-        ctx.font=`${font}px Arial`;
-        let testText = stringBuffer + item
-        if(ctx.measureText(testText).width > xSize){
-          stringBuffer = "";
-          lines.push("")
-          font = font - 2
-        }
+      stringBuffer += item;
+      stringBuffer += " "
+      lines[lines.length-1] = stringBuffer;
 
-        stringBuffer += item;
-        stringBuffer += " "
-        lines[lines.length-1] = stringBuffer;
+    })
 
-      })
-
-      ctx.rotate(355*Math.PI/180)
-      lines.forEach( (item, i) => {
-        console.log(item);
-        ctx.fillText(item,132,185+font+(font*i+1) )
-      })
+    ctx.rotate(355*Math.PI/180)
+    lines.forEach( (item, i) => {
+      console.log(item);
+      ctx.fillText(item,132,185+font+(font*i+1) )
+    })
 
 
-      var stream = canvas.pngStream();
+  canvas.toBuffer((err, buf) => {
+    if (err) throw err // encoding failed
+    // buf is PNG-encoded image
 
-      stream.on('data', function(chunk){
-         out.write(chunk);
-      })
+    message.channel.send({file:buf})
+    ctx.clearRect(0, 0, 400, 400);
+  })
 
-      stream.on('end', function(){
-         message.channel.send({file:'out.png'})
 
-      })
+  })
+
   }
-
-}
 
 module.exports.help = {
 

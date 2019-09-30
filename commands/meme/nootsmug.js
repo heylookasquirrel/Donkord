@@ -1,23 +1,15 @@
-let canvaslib = require("canvas-prebuilt");
-let fs = require("fs")
+const { createCanvas, loadImage } = require('canvas')
+const canvas = createCanvas(356, 380)
+const ctx = canvas.getContext('2d')
 
 module.exports.run = async (bot, message, args, string) =>{
 
-  message.delete(1);
-  Image = canvaslib.Image;
-  canvas = new canvaslib(282, 343);
-  ctx = canvas.getContext('2d');
-  var img = new canvaslib.Image;
 
-  var out = fs.createWriteStream('out.png');
 
-  fs.readFile('resources/img/nootsmug.png', function(err, image){
-  if (err) throw err;
-  img.src = image;
-  });
+    message.delete(1);
 
-  img.onload = async function(){
-      ctx.drawImage(img, 0, 0, img.width, img.height);
+    loadImage('resources/img/nootsmug.png').then((image) => {
+      ctx.drawImage(image, 0, 0, image.width, image.height);
 
       let xSize = 130;
       let ySize = 69;
@@ -48,18 +40,14 @@ module.exports.run = async (bot, message, args, string) =>{
       })
 
 
-      var stream = canvas.pngStream();
+    	canvas.toBuffer((err, buf) => {
+    	  if (err) throw err // encoding failed
+    	  // buf is PNG-encoded image
 
-      stream.on('data', function(chunk){
-         out.write(chunk);
-      })
-
-      stream.on('end', function(){
-         message.channel.send({file:'out.png'})
-
-      })
-  }
-
+    	  message.channel.send({file:buf})
+    	  ctx.clearRect(0, 0, 400, 400);
+    	})
+    })
 }
 
 module.exports.help = {
